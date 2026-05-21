@@ -1,0 +1,67 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-brand: #0052ff;
+  --color-brand-active: #003ecc;
+  --color-brand-disabled: #a8b8cc;
+  --color-accent-yellow: #f4b000;
+  
+  --color-surface-canvas: #ffffff;
+  --color-surface-soft: #f7f7f7;
+  --color-surface-strong: #eef0f3;
+  --color-surface-dark: #0a0b0d;
+  --color-surface-dark-elevated: #16181c;
+  
+  --color-hairline: #dee1e6;
+  --color-ink: #0a0b0d;
+  --color-body-text: #5b616e;
+  --color-muted-text: #7c828a;
+  --color-muted-soft: #a8acb3;
+  
+  --color-semantic-up: #05b169;
+  --color-semantic-down: #cf202f;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-surface-canvas);
+  color: var(--color-body-text);
+  margin: 0;
+  padding: 0;
+}
+
+/* Custom PrimeNG styles overrides for Coinbase visual style */
+.p-inputtext {
+  border-radius: 8px !important;
+  border: 1px solid var(--color-hairline) !important;
+  font-family: var(--font-sans) !important;
+  font-size: 14px !important;
+  color: var(--color-ink) !important;
+  padding: 8px 12px !important;
+  background-color: var(--color-surface-canvas) !important;
+}
+
+.p-inputtext:focus {
+  border-color: var(--color-brand) !important;
+  box-shadow: 0 0 0 2px rgba(0, 82, 255, 0.1) !important;
+  outline: none !important;
+}
+
+.p-dropdown {
+  border-radius: 8px !important;
+  border: 1px solid var(--color-hairline) !important;
+  font-family: var(--font-sans) !important;
+}
+
+.p-dropdown:not(.p-disabled).p-focus {
+  border-color: var(--color-brand) !important;
+  box-shadow: 0 0 0 2px rgba(0, 82, 255, 0.1) !important;
+}
+

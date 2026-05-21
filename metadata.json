@@ -1,0 +1,6 @@
+{
+  "name": "BraSeller",
+  "description": "Sistema Modular Multi-Plataforma para gestão de vendas de e-commerce e integração multi-tenant com Mercado Livre, Shopee e Amazon.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
