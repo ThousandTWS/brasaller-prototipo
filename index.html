@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cronograma Completo | BraSeller x Clarituz</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg: #f6f9fc;
+      --surface: #ffffff;
+      --surface-soft: #eef5fb;
+      --text: #122033;
+      --muted: #66758a;
+      --line: #d9e5f0;
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --primary-soft: #dbeafe;
+      --cyan: #0ea5e9;
+      --green: #16a34a;
+      --amber: #d97706;
+      --red: #dc2626;
+      --shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.10), transparent 28rem),
+        radial-gradient(circle at top right, rgba(14, 165, 233, 0.10), transparent 22rem),
+        var(--bg);
+      line-height: 1.5;
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 34px 0 72px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: linear-gradient(145deg, #2563eb, #0ea5e9);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      letter-spacing: -0.08em;
+      box-shadow: 0 16px 30px rgba(37, 99, 235, 0.22);
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 19px;
+      letter-spacing: -0.02em;
+    }
+
+    .brand span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 11px 16px;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 10px 22px rgba(37, 99, 235, 0.20);
+    }
+
+    button.secondary {
+      background: white;
+      color: var(--primary-dark);
+      border: 1px solid var(--line);
+      box-shadow: none;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(255,255,255,0.96), rgba(239,246,255,0.94));
+      border: 1px solid rgba(217,229,240,0.8);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius-xl);
+      padding: 42px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -90px;
+      top: -110px;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: rgba(37,99,235,0.10);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 0.8fr;
+      gap: 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      color: var(--primary-dark);
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+      margin: 0 0 18px;
+    }
+
+    .lead {
+      max-width: 720px;
+      font-size: 18px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .summary-card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+    }
+
+    .summary-card h3 {
+      margin: 0 0 14px;
+      font-size: 16px;
+    }
+
+    .metric {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 0;
+      border-top: 1px solid var(--line);
+      font-size: 14px;
+    }
+
+    .metric:first-of-type {
+      border-top: 0;
+    }
+
+    .metric span {
+      color: var(--muted);
+    }
+
+    .metric strong {
+      color: var(--text);
+      text-align: right;
+    }
+
+    .section {
+      margin-top: 30px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: end;
+      margin: 0 0 16px;
+    }
+
+    .section-head h2 {
+      font-size: 28px;
+      letter-spacing: -0.035em;
+      margin: 0;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      margin: 6px 0 0;
+      max-width: 720px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      box-shadow: 0 10px 28px rgba(15,23,42,0.04);
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      letter-spacing: -0.02em;
+      font-size: 18px;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .number {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
+
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .feature {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .check {
+      flex: 0 0 auto;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: #dcfce7;
+      color: #166534;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    .feature strong {
+      display: block;
+      margin-bottom: 4px;
+      letter-spacing: -0.01em;
+    }
+
+    .feature span {
+      color: var(--muted);
+      font-size: 14px;
+      display: block;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+    }
+
+    .month {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: 0 10px 28px rgba(15,23,42,0.04);
+    }
+
+    .month-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      padding: 20px 22px;
+      background: linear-gradient(90deg, #eff6ff, #ffffff);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .month-header h3 {
+      margin: 0;
+      font-size: 21px;
+      letter-spacing: -0.025em;
+    }
+
+    .month-header span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .weeks {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .week {
+      padding: 20px;
+      border-right: 1px solid var(--line);
+      min-height: 230px;
+    }
+
+    .week:last-child {
+      border-right: 0;
+    }
+
+    .week small {
+      color: var(--primary-dark);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .week h4 {
+      margin: 8px 0 10px;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .week ul,
+    .compact-list {
+      margin: 0;
+      padding-left: 17px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .week li,
+    .compact-list li {
+      margin: 7px 0;
+    }
+
+    .charts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .chart-card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      padding: 22px;
+      min-height: 340px;
+    }
+
+    .chart-card h3 {
+      margin: 0 0 4px;
+      font-size: 18px;
+    }
+
+    .chart-card p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 28px rgba(15,23,42,0.04);
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+
+    th {
+      background: #eff6ff;
+      color: var(--primary-dark);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    td {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    td strong {
+      color: var(--text);
+    }
+
+    .status {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 12px;
+      background: #e0f2fe;
+      color: #075985;
+      white-space: nowrap;
+    }
+
+    .status.critical {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .status.ok {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .footer {
+      margin-top: 34px;
+      padding: 24px 0 0;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .print-note {
+      display: none;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .grid-4,
+      .grid-3,
+      .grid-2,
+      .charts,
+      .feature-list {
+        grid-template-columns: 1fr;
+      }
+
+      .weeks {
+        grid-template-columns: 1fr;
+      }
+
+      .week {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .week:last-child {
+        border-bottom: 0;
+      }
+
+      .topbar,
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .actions {
+        justify-content: flex-start;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .page {
+        width: 100%;
+        padding: 0;
+      }
+
+      .actions {
+        display: none;
+      }
+
+      .hero,
+      .card,
+      .month,
+      .chart-card,
+      table {
+        box-shadow: none;
+      }
+
+      .section {
+        break-inside: avoid;
+      }
+
+      .month,
+      .chart-card,
+      .card,
+      table {
+        break-inside: avoid;
+      }
+
+      .print-note {
+        display: block;
+        color: var(--muted);
+        margin-top: 8px;
+      }
+    }
+  
+    /* =========================
+       Responsividade completa
+       Mobile-first refinements
+       ========================= */
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    img,
+    svg,
+    canvas {
+      max-width: 100%;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: auto !important;
+    }
+
+    .table-scroll {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border-radius: var(--radius-xl);
+    }
+
+    .table-scroll table {
+      min-width: 760px;
+    }
+
+    .chart-box {
+      position: relative;
+      width: 100%;
+      min-height: 280px;
+    }
+
+    .chart-box canvas {
+      position: absolute;
+      inset: 0;
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    @media (min-width: 1280px) {
+      .page {
+        width: min(1240px, calc(100% - 48px));
+      }
+
+      .hero {
+        padding: 52px;
+      }
+
+      .feature-list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .weeks {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .week:nth-child(2) {
+        border-right: 0;
+      }
+
+      .week:nth-child(1),
+      .week:nth-child(2) {
+        border-bottom: 1px solid var(--line);
+      }
+
+      .feature-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 820px) {
+      .page {
+        width: min(100% - 24px, 720px);
+        padding: 18px 0 46px;
+      }
+
+      .topbar {
+        gap: 14px;
+        margin-bottom: 16px;
+      }
+
+      .brand {
+        align-items: flex-start;
+      }
+
+      .logo {
+        width: 42px;
+        height: 42px;
+        border-radius: 14px;
+      }
+
+      .actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px 13px;
+        font-size: 13px;
+      }
+
+      .hero {
+        padding: 26px 20px;
+        border-radius: 22px;
+      }
+
+      .hero-grid,
+      .grid-4,
+      .grid-3,
+      .grid-2,
+      .charts,
+      .feature-list {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: clamp(31px, 10vw, 46px);
+        line-height: 1.02;
+      }
+
+      .lead {
+        font-size: 16px;
+      }
+
+      .summary-card {
+        padding: 18px;
+      }
+
+      .section {
+        margin-top: 24px;
+      }
+
+      .section-head {
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .section-head h2 {
+        font-size: 24px;
+      }
+
+      .section-head p {
+        font-size: 14px;
+      }
+
+      .pill {
+        white-space: normal;
+        line-height: 1.25;
+      }
+
+      .card,
+      .feature,
+      .chart-card {
+        padding: 18px;
+        border-radius: 18px;
+      }
+
+      .feature {
+        gap: 12px;
+      }
+
+      .month {
+        border-radius: 22px;
+      }
+
+      .month-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 18px;
+      }
+
+      .month-header h3 {
+        font-size: 19px;
+      }
+
+      .weeks {
+        grid-template-columns: 1fr;
+      }
+
+      .week {
+        min-height: auto;
+        border-right: 0 !important;
+        border-bottom: 1px solid var(--line);
+        padding: 18px;
+      }
+
+      .week:last-child {
+        border-bottom: 0;
+      }
+
+      .chart-card {
+        min-height: auto;
+      }
+
+      .chart-box {
+        min-height: 260px;
+      }
+
+      th,
+      td {
+        padding: 13px 14px;
+        font-size: 13px;
+      }
+
+      .footer {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .page {
+        width: min(100% - 18px, 480px);
+        padding-top: 12px;
+      }
+
+      .topbar {
+        align-items: stretch;
+      }
+
+      .brand strong {
+        font-size: 17px;
+      }
+
+      .brand span {
+        font-size: 12px;
+      }
+
+      .actions {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 22px 16px;
+      }
+
+      .eyebrow {
+        font-size: 10px;
+        letter-spacing: 0.10em;
+      }
+
+      h1 {
+        font-size: clamp(29px, 12vw, 40px);
+        letter-spacing: -0.045em;
+      }
+
+      .lead {
+        font-size: 15px;
+      }
+
+      .metric {
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .metric strong {
+        text-align: left;
+      }
+
+      .section-head h2 {
+        font-size: 22px;
+      }
+
+      .card h3,
+      .feature strong,
+      .chart-card h3 {
+        font-size: 16px;
+      }
+
+      .feature span,
+      .card p,
+      .compact-list,
+      .week ul {
+        font-size: 13px;
+      }
+
+      .check {
+        width: 23px;
+        height: 23px;
+      }
+
+      .number {
+        width: 31px;
+        height: 31px;
+        border-radius: 11px;
+      }
+
+      .month-header h3 {
+        font-size: 18px;
+      }
+
+      .chart-box {
+        min-height: 235px;
+      }
+
+      .table-scroll table {
+        min-width: 680px;
+      }
+
+      .status {
+        white-space: normal;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .page {
+        width: min(100% - 14px, 360px);
+      }
+
+      .hero,
+      .card,
+      .feature,
+      .chart-card,
+      .summary-card {
+        padding: 16px 14px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .lead {
+        font-size: 14px;
+      }
+
+      .chart-box {
+        min-height: 215px;
+      }
+    }
+
+    @media print {
+      .table-scroll {
+        overflow: visible;
+      }
+
+      .table-scroll table {
+        min-width: 0;
+      }
+
+      .chart-box {
+        min-height: 260px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo">C</div>
+        <div>
+          <strong>Clarituz</strong>
+          <span>Cronograma executivo de desenvolvimento</span>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="secondary" onclick="window.scrollTo({ top: 0, behavior: 'smooth' })">Voltar ao topo</button>
+        <button onclick="window.print()">Exportar PDF</button>
+      </div>
+    </div>
+
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">BraSeller • Projeto de 3 meses</div>
+          <h1>Cronograma completo de funcionalidades para validação do cliente</h1>
+          <p class="lead">
+            Plano executivo com todas as funcionalidades previstas para o MVP: cadastro fiscal, integração com vendas, conciliação financeira, custos, despesas, comprovantes, DRE, painel do contador, assinatura digital, fechamento mensal e liberação do lucro apurado.
+          </p>
+          <p class="print-note">Documento preparado para apresentação ao cliente.</p>
+        </div>
+        <aside class="summary-card">
+          <h3>Resumo do projeto</h3>
+          <div class="metric"><span>Duração</span><strong>3 meses / 12 semanas</strong></div>
+          <div class="metric"><span>Produto</span><strong>Hub financeiro e contábil para e-commerce</strong></div>
+          <div class="metric"><span>Objetivo</span><strong>Apuração real de lucro e DRE validável</strong></div>
+          <div class="metric"><span>Entrega final</span><strong>MVP funcional para operação assistida</strong></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Equipe responsável</h2>
+          <p>Organização dos papéis principais para execução, decisão e acompanhamento do projeto.</p>
+        </div>
+        <span class="pill">Gestão Clarituz</span>
+      </div>
+      <div class="table-scroll"><table>
+        <thead>
+          <tr>
+            <th>Papel</th>
+            <th>Nome</th>
+            <th>Responsabilidade no projeto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Agência de Desenvolvimento</strong></td>
+            <td>Clarituz</td>
+            <td>Condução do projeto, organização das entregas, interface com o cliente e padronização da experiência.</td>
+          </tr>
+          <tr>
+            <td><strong>CEO</strong></td>
+            <td>Jerferson</td>
+            <td>Direção estratégica, validação de prioridades, alinhamento comercial e aprovação dos marcos principais.</td>
+          </tr>
+          <tr>
+            <td><strong>Engenheiro Full Stack</strong></td>
+            <td>Vinicius Moreira</td>
+            <td>Construção funcional do produto, estruturação dos módulos, integração dos fluxos e entrega do MVP.</td>
+          </tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Visão do produto entregue</h2>
+          <p>O cliente deve enxergar que o projeto não é apenas um painel de vendas. A entrega é um sistema de apuração financeira e contábil para apoiar a distribuição de lucros com dados rastreáveis.</p>
+        </div>
+        <span class="pill">Escopo do MVP</span>
+      </div>
+      <div class="grid-4">
+        <div class="card">
+          <div class="number">01</div>
+          <h3>Coleta de dados</h3>
+          <p>Entrada de vendas, taxas, custos, despesas, comprovantes e movimentações financeiras da empresa.</p>
+        </div>
+        <div class="card">
+          <div class="number">02</div>
+          <h3>Apuração real</h3>
+          <p>Cálculo do lucro líquido considerando receita, deduções, impostos, custos e despesas válidas.</p>
+        </div>
+        <div class="card">
+          <div class="number">03</div>
+          <h3>Validação contábil</h3>
+          <p>Painel para o contador revisar relatórios, conferir comprovantes e assinar o fechamento mensal.</p>
+        </div>
+        <div class="card">
+          <div class="number">04</div>
+          <h3>Liberação do lucro</h3>
+          <p>Após a validação, o sistema apresenta ao lojista o lucro contabilizado e disponível para distribuição.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Funcionalidades completas previstas</h2>
+          <p>Lista clara para o cliente entender exatamente o que será construído dentro do ciclo de 3 meses.</p>
+        </div>
+        <span class="pill">Catálogo de features</span>
+      </div>
+      <div class="feature-list">
+        <div class="feature"><div class="check">✓</div><div><strong>Cadastro do lojista</strong><span>Registro da empresa, identificação do responsável, dados fiscais básicos e estrutura inicial da conta.</span></div></div>
+        <div class="feature"><div class="check">✓</div><div><strong>Onboarding fiscal</strong><span>Coleta do CNPJ, razão social, endereço, atividade principal, porte e regime tributário informado.</span></div></div>
+        <div class="feature"><div class="check">✓</div><div><strong>Perfis de acesso</strong><span>Acesso separado para lojista, equipe administrativa e contador, com permissões compatíveis com cada papel.</span></div></div>
+        <div class="feature"><div class="check">✓</div><div><strong>Painel inicial do lojista</strong><span>Resumo de vendas, deduções, despesas, lucro preliminar e pendências para fechamento.</span></div></div>
+
+        <div class="feature"><div class="check">✓</div><div><strong>Integração com vendas do marketplace inicial</strong><span>Entrada de pedidos, valores, status financeiro, taxas e informações necessárias para apuração.</span></div></div>
+        <div class="feature"><div class="check">✓</div><div><strong>Reconhecimento de receita por status</strong><span>A venda só entra na apuração quando estiver concluída ou entregue, evitando lucro fictício.</span></div></div>
+        <div class="feature"><div class="check">✓</div><div><strong>Separação de receita e taxas</strong><span>Registro do valor bruto da venda e classificação separada de comissões, tarifas, frete e demais deduções.</span></div></div>
+        <div class="feature"><div class="check">✓</div><div><strong>Tratamento de cancelamentos</strong><span>Cancelamentos e devoluções geram estorno contábil automático e ajuste do resultado do período correto.</span></div></div>
+
+        <div class="feature"><div class="check">✓</div><div><strong>Cadastro de produtos e itens</strong><span>Base inicial para relacionar vendas aos produtos e permitir apuração de custo da mercadoria vendida.</span></div></div>
+        <div class="feature"><div class="check">✓</div><div><strong>Entrada de notas de fornecedores</strong><span>Rotina para registrar compras, custos de aquisição, itens comprados e vínculo com estoque.</span></div></div>
+        <div class="feature"><div class="check">✓</div><div><strong>Cálculo de custo médio</strong><span>Apuração do custo de aquisição dos produtos para deduzir corretamente o custo da mercadoria vendida.</span></div></div>
+        <div class="feature"><div class="check">✓</div><div><strong>Baixa de custo na venda</strong><span>Quando uma venda é reconhecida, o custo correspondente é abatido da margem do período.</span></div></div>
+
+        <div class="feature"><div class="check">✓</div><div><strong>Contas a pagar</strong><span>Cadastro de despesas operacionais como aluguel, energia, internet, mão de obra, insumos e outros gastos.</span></div></div>
+        <div class="feature"><div class="check">✓</div><div><strong>Anexo obrigatório de comprovantes</strong><span>Despesa manual só poderá ser considerada na apuração quando possuir documento vinculado.</span></div></div>
+        <div class="feature"><div class="check">✓</div><div><strong>Despesas bancárias</strong><span>Registro e classificação de tarifas, custos financeiros, juros e movimentações relevantes da conta empresarial.</span></div></div>
+        <div class="feature"><div class="check">✓</div><div><strong>Classificação de despesas</strong><span>Categorização por tipo: operacional, financeira, comercial, perdas, impostos, custo e outros grupos.</span></div></div>
+
+        <div class="feature"><div class="check">✓</div><div><strong>Motor de DRE mensal</strong><span>Geração do demonstrativo com receita bruta, deduções, custos, despesas, impostos e lucro líquido.</span></div></div>
+        <div class="feature"><div class="check">✓</div><div><strong>Prévia de resultado em tempo real</strong><span>Visão parcial do mês antes do fechamento, com pendências e alertas de inconsistência.</span></div></div>
+        <div class="feature"><div class="check">✓</div><div><strong>Painel do contador</strong><span>Área para revisão da DRE, conferência de comprovantes, análise de despesas e validação do fechamento.</span></div></div>
+        <div class="feature"><div class="check">✓</div><div><strong>Assinatura e validação do fechamento</strong><span>Fluxo de aprovação do contador para transformar a apuração em fechamento validado.</span></div></div>
+
+        <div class="feature"><div class="check">✓</div><div><strong>Bloqueio de período fechado</strong><span>Depois da validação, o mês fica travado para impedir alterações indevidas em vendas, custos e despesas.</span></div></div>
+        <div class="feature"><div class="check">✓</div><div><strong>Liberação visual do lucro apurado</strong><span>Após o fechamento assinado, o lojista visualiza o lucro contabilizado disponível para distribuição.</span></div></div>
+        <div class="feature"><div class="check">✓</div><div><strong>Relatórios executivos</strong><span>Visões de receita, deduções, custos, despesas, lucro líquido, pendências e histórico mensal.</span></div></div>
+        <div class="feature"><div class="check">✓</div><div><strong>Registro de auditoria</strong><span>Histórico de ações relevantes, alterações, validações e eventos que impactam a apuração financeira.</span></div></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Cronograma de 3 meses</h2>
+          <p>Divisão semanal do trabalho para o cliente acompanhar a evolução do produto e saber o que será entregue em cada etapa.</p>
+        </div>
+        <span class="pill">12 semanas</span>
+      </div>
+
+      <div class="timeline">
+        <div class="month">
+          <div class="month-header">
+            <div>
+              <h3>Mês 1 — Fundação do produto e dados fiscais</h3>
+              <span>Semanas 1 a 4</span>
+            </div>
+            <span class="status">Base operacional</span>
+          </div>
+          <div class="weeks">
+            <div class="week">
+              <small>Semana 01</small>
+              <h4>Alinhamento e modelagem do fluxo</h4>
+              <ul>
+                <li>Definição da jornada do lojista.</li>
+                <li>Definição da jornada do contador.</li>
+                <li>Mapeamento das regras de DRE.</li>
+                <li>Organização dos tipos de receita, custo e despesa.</li>
+              </ul>
+            </div>
+            <div class="week">
+              <small>Semana 02</small>
+              <h4>Cadastro e onboarding fiscal</h4>
+              <ul>
+                <li>Cadastro da empresa e responsável.</li>
+                <li>Dados fiscais do lojista.</li>
+                <li>Regime tributário e porte.</li>
+                <li>Pendências obrigatórias antes de operar.</li>
+              </ul>
+            </div>
+            <div class="week">
+              <small>Semana 03</small>
+              <h4>Perfis e painéis iniciais</h4>
+              <ul>
+                <li>Perfil do lojista.</li>
+                <li>Perfil do contador.</li>
+                <li>Perfil administrativo.</li>
+                <li>Primeira visão do painel executivo.</li>
+              </ul>
+            </div>
+            <div class="week">
+              <small>Semana 04</small>
+              <h4>Entrada inicial de vendas</h4>
+              <ul>
+                <li>Registro das vendas do canal inicial.</li>
+                <li>Status financeiro da venda.</li>
+                <li>Receita bruta e valores de repasse.</li>
+                <li>Base para conciliação do mês.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="month">
+          <div class="month-header">
+            <div>
+              <h3>Mês 2 — Apuração financeira, custos e despesas</h3>
+              <span>Semanas 5 a 8</span>
+            </div>
+            <span class="status">Motor contábil</span>
+          </div>
+          <div class="weeks">
+            <div class="week">
+              <small>Semana 05</small>
+              <h4>Receitas e deduções diretas</h4>
+              <ul>
+                <li>Separação de venda bruta.</li>
+                <li>Comissões e tarifas da plataforma.</li>
+                <li>Fretes e despesas comerciais.</li>
+                <li>Critério de reconhecimento da receita.</li>
+              </ul>
+            </div>
+            <div class="week">
+              <small>Semana 06</small>
+              <h4>Produtos, estoque e custos</h4>
+              <ul>
+                <li>Cadastro de produtos e itens.</li>
+                <li>Entrada de compras.</li>
+                <li>Apuração de custo médio.</li>
+                <li>Vínculo do custo à venda.</li>
+              </ul>
+            </div>
+            <div class="week">
+              <small>Semana 07</small>
+              <h4>Despesas e comprovantes</h4>
+              <ul>
+                <li>Contas a pagar.</li>
+                <li>Despesas operacionais.</li>
+                <li>Anexação obrigatória de comprovantes.</li>
+                <li>Classificação por categoria contábil.</li>
+              </ul>
+            </div>
+            <div class="week">
+              <small>Semana 08</small>
+              <h4>Exceções financeiras</h4>
+              <ul>
+                <li>Cancelamentos.</li>
+                <li>Devoluções.</li>
+                <li>Avarias e perdas.</li>
+                <li>Estorno no período correto.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="month">
+          <div class="month-header">
+            <div>
+              <h3>Mês 3 — DRE, contador, fechamento e entrega</h3>
+              <span>Semanas 9 a 12</span>
+            </div>
+            <span class="status ok">MVP entregue</span>
+          </div>
+          <div class="weeks">
+            <div class="week">
+              <small>Semana 09</small>
+              <h4>DRE mensal automática</h4>
+              <ul>
+                <li>Receita bruta consolidada.</li>
+                <li>Deduções de venda.</li>
+                <li>CMV, despesas e impostos.</li>
+                <li>Lucro líquido do período.</li>
+              </ul>
+            </div>
+            <div class="week">
+              <small>Semana 10</small>
+              <h4>Painel do contador</h4>
+              <ul>
+                <li>Revisão da DRE.</li>
+                <li>Conferência de comprovantes.</li>
+                <li>Lista de pendências.</li>
+                <li>Aprovação ou solicitação de ajuste.</li>
+              </ul>
+            </div>
+            <div class="week">
+              <small>Semana 11</small>
+              <h4>Fechamento e liberação</h4>
+              <ul>
+                <li>Validação do mês.</li>
+                <li>Bloqueio do período fechado.</li>
+                <li>Liberação do lucro contabilizado.</li>
+                <li>Histórico do fechamento.</li>
+              </ul>
+            </div>
+            <div class="week">
+              <small>Semana 12</small>
+              <h4>Homologação e entrega assistida</h4>
+              <ul>
+                <li>Teste do fluxo ponta a ponta.</li>
+                <li>Ajustes finos de usabilidade.</li>
+                <li>Documentação operacional.</li>
+                <li>Apresentação final ao cliente.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Gráficos executivos</h2>
+          <p>Indicadores visuais para facilitar a apresentação do escopo e do esforço para o cliente.</p>
+        </div>
+        <span class="pill">Visão gerencial</span>
+      </div>
+
+      <div class="charts">
+        <div class="chart-card">
+          <h3>Distribuição do esforço por área</h3>
+          <p>Percentual estimado de foco durante os 3 meses.</p>
+          <div class="chart-box"><canvas id="effortChart"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h3>Entregas por mês</h3>
+          <p>Quantidade de blocos funcionais concluídos por período.</p>
+          <div class="chart-box"><canvas id="deliveryChart"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Entregáveis por módulo</h2>
+          <p>Resumo objetivo para aprovação comercial e validação do escopo.</p>
+        </div>
+        <span class="pill">O que será entregue</span>
+      </div>
+      <div class="table-scroll"><table>
+        <thead>
+          <tr>
+            <th>Módulo</th>
+            <th>Funcionalidades entregues</th>
+            <th>Critério de aceite</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Cadastro e Fiscal</strong></td>
+            <td>Cadastro do lojista, dados da empresa, regime tributário, porte, perfis de acesso e pendências iniciais.</td>
+            <td>Cliente consegue cadastrar a empresa e deixar a conta pronta para iniciar a apuração.</td>
+          </tr>
+          <tr>
+            <td><strong>Vendas e Receitas</strong></td>
+            <td>Entrada de vendas, status, receita bruta, repasse, taxas, fretes e deduções vinculadas ao pedido.</td>
+            <td>Sistema demonstra diferença entre venda bruta, descontos e valor líquido apurado.</td>
+          </tr>
+          <tr>
+            <td><strong>Custos e Estoque</strong></td>
+            <td>Produtos, compras, custos, custo médio, baixa de custo na venda e composição do CMV.</td>
+            <td>Venda reconhecida abate automaticamente o custo correspondente do resultado.</td>
+          </tr>
+          <tr>
+            <td><strong>Despesas</strong></td>
+            <td>Contas a pagar, despesas operacionais, despesas financeiras, comprovantes obrigatórios e categorização.</td>
+            <td>Despesa sem comprovante não entra como abatimento válido na apuração.</td>
+          </tr>
+          <tr>
+            <td><strong>DRE</strong></td>
+            <td>Receita bruta, deduções, custos, despesas, impostos estimados, lucro líquido e visão mensal.</td>
+            <td>Cliente visualiza demonstrativo mensal completo e rastreável.</td>
+          </tr>
+          <tr>
+            <td><strong>Contador</strong></td>
+            <td>Painel de auditoria, conferência de documentos, revisão da DRE, aprovação e fechamento do mês.</td>
+            <td>Contador consegue revisar o mês e validar ou apontar pendências.</td>
+          </tr>
+          <tr>
+            <td><strong>Fechamento</strong></td>
+            <td>Assinatura/validação, bloqueio do mês, histórico de fechamento e liberação visual do lucro apurado.</td>
+            <td>Após o fechamento, o mês fica bloqueado e o lucro é exibido como contabilizado.</td>
+          </tr>
+          <tr>
+            <td><strong>Relatórios</strong></td>
+            <td>Indicadores executivos, resultado mensal, pendências, histórico e composição do lucro.</td>
+            <td>Cliente consegue acompanhar a saúde financeira e contábil da operação.</td>
+          </tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Fluxo operacional do produto</h2>
+          <p>Como o sistema funcionará na prática após a entrega do MVP.</p>
+        </div>
+        <span class="pill">Ponta a ponta</span>
+      </div>
+      <div class="grid-3">
+        <div class="card"><div class="number">1</div><h3>Empresa é cadastrada</h3><p>Lojista informa dados da empresa, regime tributário, responsáveis e configurações iniciais.</p></div>
+        <div class="card"><div class="number">2</div><h3>Vendas entram no sistema</h3><p>Pedidos e valores são registrados com receita, taxas, fretes e status financeiro.</p></div>
+        <div class="card"><div class="number">3</div><h3>Custos são vinculados</h3><p>Produtos, compras e custo da mercadoria são relacionados às vendas reconhecidas.</p></div>
+        <div class="card"><div class="number">4</div><h3>Despesas são comprovadas</h3><p>Gastos operacionais e financeiros são lançados com documentos de validação.</p></div>
+        <div class="card"><div class="number">5</div><h3>DRE é gerada</h3><p>O sistema consolida receita, deduções, custos, despesas, impostos e lucro líquido.</p></div>
+        <div class="card"><div class="number">6</div><h3>Contador valida</h3><p>O fechamento é revisado, validado e o lucro contabilizado fica disponível para distribuição.</p></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Regras críticas do projeto</h2>
+          <p>Condições que precisam ser mantidas para preservar a validade financeira e a confiança do cliente.</p>
+        </div>
+        <span class="pill">Inadmissíveis</span>
+      </div>
+      <div class="table-scroll"><table>
+        <thead>
+          <tr>
+            <th>Regra</th>
+            <th>Descrição</th>
+            <th>Impacto no produto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="status critical">Crítico</span></td>
+            <td><strong>Despesa sem comprovante não abate lucro.</strong></td>
+            <td>O sistema deve impedir que gastos manuais sem documento reduzam o lucro validável.</td>
+          </tr>
+          <tr>
+            <td><span class="status critical">Crítico</span></td>
+            <td><strong>Mês fechado não pode ser alterado.</strong></td>
+            <td>Após validação do contador, pedidos, taxas, custos e despesas daquele período ficam bloqueados.</td>
+          </tr>
+          <tr>
+            <td><span class="status">Importante</span></td>
+            <td><strong>Cancelamento retroativo entra no mês atual.</strong></td>
+            <td>Se uma venda fechada for devolvida depois, o ajuste aparece no mês corrente, sem reabrir o passado.</td>
+          </tr>
+          <tr>
+            <td><span class="status">Importante</span></td>
+            <td><strong>Receita só entra quando concluída.</strong></td>
+            <td>Pedidos em separação, envio ou status intermediário não compõem o lucro final.</td>
+          </tr>
+          <tr>
+            <td><span class="status">Importante</span></td>
+            <td><strong>O sistema não será um ERP logístico.</strong></td>
+            <td>O foco é financeiro e contábil; separação, expedição e operação logística ficam fora do MVP.</td>
+          </tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Riscos, dependências e pontos de decisão</h2>
+          <p>Itens que exigem alinhamento com o cliente para reduzir retrabalho e proteger o prazo de 3 meses.</p>
+        </div>
+        <span class="pill">Gestão de risco</span>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <h3>Dependência contábil</h3>
+          <p>As regras de validação, classificação de despesas e aceite da DRE precisam ser aprovadas com a contabilidade.</p>
+        </div>
+        <div class="card">
+          <h3>Qualidade dos dados</h3>
+          <p>O produto depende de vendas, custos, despesas e comprovantes bem registrados para gerar lucro confiável.</p>
+        </div>
+        <div class="card">
+          <h3>Escopo de 3 meses</h3>
+          <p>O ciclo prioriza MVP funcional. Expansões para novos canais e automações avançadas ficam para a próxima etapa.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Fora do escopo inicial de 3 meses</h2>
+          <p>Itens importantes, mas recomendados para uma fase posterior para não comprometer a entrega do MVP.</p>
+        </div>
+        <span class="pill">Pós-MVP</span>
+      </div>
+      <div class="table-scroll"><table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Motivo para ficar fora do MVP</th>
+            <th>Momento recomendado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Expansão para múltiplos marketplaces adicionais</strong></td>
+            <td>Exige novos ciclos de validação, regras específicas e testes de repasse financeiro.</td>
+            <td>Após estabilização do canal inicial.</td>
+          </tr>
+          <tr>
+            <td><strong>ERP logístico completo</strong></td>
+            <td>Separação, expedição, etiquetas e operação logística mudariam o produto de categoria.</td>
+            <td>Somente se virar nova linha de produto.</td>
+          </tr>
+          <tr>
+            <td><strong>Contabilidade BPO completa</strong></td>
+            <td>Exige equipe operacional, SLA de atendimento e responsabilidade contábil ampliada.</td>
+            <td>Após validação comercial do SaaS.</td>
+          </tr>
+          <tr>
+            <td><strong>Automação fiscal avançada</strong></td>
+            <td>Depende de regras fiscais detalhadas e validação especializada.</td>
+            <td>Fase 2 ou 3 do produto.</td>
+          </tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <footer class="footer">
+      <span>Clarituz • Cronograma executivo BraSeller</span>
+      <span>Versão para apresentação ao cliente • Projeto de 3 meses</span>
+    </footer>
+  </main>
+
+  <script>
+    const blue = "#2563eb";
+    const cyan = "#0ea5e9";
+    const green = "#16a34a";
+    const amber = "#d97706";
+    const slate = "#64748b";
+
+    new Chart(document.getElementById("effortChart"), {
+      type: "doughnut",
+      data: {
+        labels: ["Fundação e cadastro", "Receitas e deduções", "Custos e despesas", "DRE e contador", "Homologação"],
+        datasets: [{
+          data: [20, 22, 24, 24, 10],
+          backgroundColor: [blue, cyan, green, amber, slate],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: "bottom", labels: { boxWidth: 12, usePointStyle: true } }
+        },
+        cutout: "66%"
+      }
+    });
+
+    new Chart(document.getElementById("deliveryChart"), {
+      type: "bar",
+      data: {
+        labels: ["Mês 1", "Mês 2", "Mês 3"],
+        datasets: [{
+          label: "Blocos funcionais",
+          data: [8, 10, 9],
+          backgroundColor: [blue, cyan, green],
+          borderRadius: 12
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { beginAtZero: true, grid: { color: "#e2e8f0" }, ticks: { precision: 0 } },
+          x: { grid: { display: false } }
+        },
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
